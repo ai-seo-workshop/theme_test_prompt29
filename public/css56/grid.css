@@ -1,0 +1,458 @@
+/* ==========================================================================
+   grid.css — Post cards, article grids, thumbnails, meta, section blocks
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Section Blocks
+   -------------------------------------------------------------------------- */
+.section56 {
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+}
+
+.section56:last-child {
+  border-bottom: none;
+}
+
+.section56__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid var(--accent-color, #db4a37);
+}
+
+.section56__title {
+  font-family: var(--font-heading, "Oswald", sans-serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.section56__title a {
+  color: var(--text-color, #000);
+  text-decoration: none;
+}
+
+.section56__title a:hover,
+.section56__title a:focus {
+  color: var(--accent-color, #db4a37);
+  text-decoration: none;
+}
+
+.section56__footer {
+  margin-top: 1.25rem;
+  text-align: right;
+}
+
+.section56__more-link {
+  font-family: var(--font-heading, "Oswald", sans-serif);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-color, #db4a37);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.section56__more-link:hover {
+  border-bottom-color: var(--accent-color, #db4a37);
+  text-decoration: none;
+}
+
+.section56--latest {
+  background-color: #fafafa;
+  border-top: 2px solid var(--border-color, #e0e0e0);
+  padding: 2.5rem 0 3rem;
+}
+
+/* --------------------------------------------------------------------------
+   Blog Grid Layouts
+   -------------------------------------------------------------------------- */
+.blog56 {
+  width: 100%;
+}
+
+.blog56--grid {
+  display: grid;
+  gap: 1.75rem;
+}
+
+.blog56--grid--4cols {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.blog56--grid--1cols {
+  grid-template-columns: 1fr;
+}
+
+/* --------------------------------------------------------------------------
+   Thumbnail
+   -------------------------------------------------------------------------- */
+.thumbnail56 {
+  position: relative;
+  overflow: hidden;
+  border-radius: 3px;
+  background-color: #f0f0f0;
+}
+
+.thumbnail56::before {
+  content: '';
+  display: block;
+  padding-top: 66.66%;
+}
+
+.thumbnail56 a {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.thumbnail56 img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.thumbnail56:hover img {
+  transform: scale(1.04);
+}
+
+.thumbnail56--featured::before {
+  padding-top: 60%;
+}
+
+.thumbnail56--list {
+  flex-shrink: 0;
+  width: 90px;
+  height: 70px;
+}
+
+.thumbnail56--list::before {
+  display: none;
+}
+
+.thumbnail56--list a {
+  position: static;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.thumbnail56--list img {
+  position: static;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --------------------------------------------------------------------------
+   Post Cards — Base
+   -------------------------------------------------------------------------- */
+.post56 {
+  display: flex;
+  flex-direction: column;
+}
+
+.post56__body {
+  padding: 0.9rem 0 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.post56__excerpt {
+  font-size: 0.9rem;
+  color: var(--text-light, #666);
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+  flex: 1;
+}
+
+.post56__excerpt--short {
+  font-size: 0.85rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Post Card — Grid variant
+   -------------------------------------------------------------------------- */
+.post56--grid {
+  flex-direction: column;
+}
+
+.post56--featured .post56__body {
+  padding-top: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Post Card — List variant (horizontal)
+   -------------------------------------------------------------------------- */
+.post56--list {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+}
+
+.post56--list:last-child {
+  border-bottom: none;
+}
+
+.post56--list .post56--list__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.post56--list .thumbnail56--list {
+  order: 2;
+  flex-shrink: 0;
+  width: 90px;
+  height: 68px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+/* --------------------------------------------------------------------------
+   Title
+   -------------------------------------------------------------------------- */
+.title56 {
+  margin-bottom: 0.5rem;
+}
+
+.title56 a {
+  font-family: var(--font-heading, "Oswald", sans-serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #111;
+  text-decoration: none;
+  display: block;
+  transition: color 0.2s ease;
+}
+
+.title56 a:hover,
+.title56 a:focus {
+  color: var(--accent-color, #db4a37);
+  text-decoration: none;
+}
+
+.title56--featured a {
+  font-size: 1.65rem;
+  line-height: 1.2;
+}
+
+.title56--list a {
+  font-size: 0.92rem;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Meta
+   -------------------------------------------------------------------------- */
+.meta56 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.78rem;
+  color: var(--text-light, #666);
+}
+
+.meta56--bottom {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.meta56__category--fancy a {
+  display: inline-block;
+  padding: 2px 10px;
+  background-color: var(--accent-color, #db4a37);
+  color: #fff;
+  font-family: var(--font-heading, "Oswald", sans-serif);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.meta56__category--fancy a:hover {
+  background-color: var(--link-hover, #b03828);
+  text-decoration: none;
+}
+
+.meta56__author {
+  color: var(--text-light, #666);
+}
+
+.meta56__author strong {
+  color: #333;
+}
+
+.meta56__date {
+  color: var(--text-light, #666);
+}
+
+.meta56__sep {
+  color: #bbb;
+}
+
+.meta56__filed a {
+  color: var(--accent-color, #db4a37);
+}
+
+/* --------------------------------------------------------------------------
+   Post list widget row (home page sidebar list)
+   -------------------------------------------------------------------------- */
+.post56__list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   Separator lines
+   -------------------------------------------------------------------------- */
+.post56__sep__line,
+.blog56__sep__line {
+  border: none;
+  border-top: 1px solid var(--border-color, #e0e0e0);
+  margin: 1.5rem 0;
+}
+
+/* --------------------------------------------------------------------------
+   Pagination
+   -------------------------------------------------------------------------- */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 2.5rem 0 1rem;
+}
+
+.pagination__list {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.pagination__item {
+  display: inline-flex;
+}
+
+.pagination__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  font-family: var(--font-heading, "Oswald", sans-serif);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #333;
+  border: 1px solid var(--border-color, #e0e0e0);
+  border-radius: 3px;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  background: #fff;
+}
+
+.pagination__link:hover,
+.pagination__link:focus {
+  background-color: var(--accent-color, #db4a37);
+  border-color: var(--accent-color, #db4a37);
+  color: #fff;
+  text-decoration: none;
+}
+
+.pagination__page--active,
+.pagination__page--active:hover {
+  background-color: var(--accent-color, #db4a37);
+  border-color: var(--accent-color, #db4a37);
+  color: #fff;
+  cursor: default;
+}
+
+.pagination__dots {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  color: var(--text-light, #666);
+  font-size: 1rem;
+}
+
+.pagination__prev,
+.pagination__next {
+  padding: 0 14px;
+  letter-spacing: 0.02em;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Grid
+   -------------------------------------------------------------------------- */
+@media (max-width: 1100px) {
+  .blog56--grid--4cols {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .blog56--grid--4cols {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .title56--featured a {
+    font-size: 1.35rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .blog56--grid--4cols {
+    grid-template-columns: 1fr;
+  }
+
+  .blog56--grid {
+    gap: 1.25rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Home page: featured + list row responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .widget56__row .row {
+    flex-direction: column;
+  }
+
+  .widget56__row .col-2-3,
+  .widget56__row .col-1-3 {
+    width: 100%;
+  }
+}

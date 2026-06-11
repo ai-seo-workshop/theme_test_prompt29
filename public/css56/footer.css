@@ -1,0 +1,194 @@
+/* ==========================================================================
+   footer.css — Site footer styles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Footer Root
+   -------------------------------------------------------------------------- */
+.site-footer {
+  background-color: var(--footer-bg, #191919);
+  color: var(--footer-text, #ccc);
+  font-size: 0.875rem;
+  margin-top: 3rem;
+}
+
+/* --------------------------------------------------------------------------
+   Footer Top (widget columns)
+   -------------------------------------------------------------------------- */
+.site-footer__top {
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.site-footer__top .row {
+  gap: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Footer Columns
+   -------------------------------------------------------------------------- */
+.footer56__col {
+  padding: 0 20px;
+  margin-bottom: 2rem;
+}
+
+/* --------------------------------------------------------------------------
+   Widget Area
+   -------------------------------------------------------------------------- */
+.widget-area {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Widget Title
+   -------------------------------------------------------------------------- */
+.widget-title {
+  font-family: var(--font-heading, "Oswald", sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent-color, #db4a37);
+  display: inline-block;
+}
+
+/* --------------------------------------------------------------------------
+   Recent Posts List
+   -------------------------------------------------------------------------- */
+.footer56__recent-posts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer56__recent-item {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer56__recent-item:last-child {
+  border-bottom: none;
+}
+
+.footer56__recent-link {
+  color: var(--footer-text, #ccc);
+  text-decoration: none;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  display: block;
+  transition: color 0.2s ease;
+}
+
+.footer56__recent-link:hover,
+.footer56__recent-link:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   Category List
+   -------------------------------------------------------------------------- */
+.footer56__cat-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer56__cat-list li {
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer56__cat-list li:last-child {
+  border-bottom: none;
+}
+
+.footer56__cat-link {
+  color: var(--footer-text, #ccc);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.footer56__cat-link:hover,
+.footer56__cat-link:focus {
+  color: var(--accent-color, #db4a37);
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   Generic Link Lists (Company, Resource, Legal)
+   -------------------------------------------------------------------------- */
+.footer56__link-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer56__link-list li {
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer56__link-list li:last-child {
+  border-bottom: none;
+}
+
+.footer56__link {
+  color: var(--footer-text, #ccc);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.2s ease;
+}
+
+.footer56__link:hover,
+.footer56__link:focus {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   Footer Bottom (Copyright bar)
+   -------------------------------------------------------------------------- */
+.site-footer__bottom {
+  padding: 1.25rem 0;
+  text-align: center;
+}
+
+.site-footer__copyright {
+  font-size: 0.8rem;
+  color: #888;
+  margin: 0;
+}
+
+.site-footer__copyright a {
+  color: #999;
+  text-decoration: none;
+}
+
+.site-footer__copyright a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Footer
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .footer56__col.col-1-4 {
+    width: 50%;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer56__col.col-1-4 {
+    width: 100%;
+  }
+
+  .site-footer__top {
+    padding: 2rem 0 1rem;
+  }
+}

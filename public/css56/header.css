@@ -1,0 +1,342 @@
+/* ==========================================================================
+   header.css — Desktop & Mobile Header, Navigation, Mobile Overlay
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Desktop Header: masthead wrapper
+   -------------------------------------------------------------------------- */
+.masthead {
+  background-color: #fff;
+  z-index: 500;
+}
+
+.masthead--sticky {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.masthead__wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   Topbar
+   -------------------------------------------------------------------------- */
+.topbar56 {
+  background-color: var(--topbar-bg, #191919);
+  color: #ccc;
+  height: 36px;
+  display: flex;
+  align-items: center;
+}
+
+.topbar56__inner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.topbar56__date {
+  font-size: 0.75rem;
+  font-family: var(--font-heading, "Oswald", sans-serif);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #bbb;
+}
+
+/* --------------------------------------------------------------------------
+   Main Header (Logo area)
+   -------------------------------------------------------------------------- */
+.main-header56 {
+  background-color: #fff;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+  padding: 14px 0;
+}
+
+.main-header56__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-header56__logo {
+  display: inline-block;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.main-header56__logo:hover {
+  opacity: 0.85;
+  text-decoration: none;
+}
+
+.site-logo {
+  max-height: 60px;
+  width: auto;
+}
+
+/* --------------------------------------------------------------------------
+   Navigation Bar
+   -------------------------------------------------------------------------- */
+.nav56 {
+  background-color: #fff;
+  border-bottom: 2px solid var(--border-color, #e0e0e0);
+  position: relative;
+}
+
+.mainnav {
+  display: flex;
+  align-items: center;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 0;
+}
+
+.menu__item {
+  position: relative;
+}
+
+.menu__link {
+  display: block;
+  padding: 12px 16px;
+  font-family: var(--font-heading, "Oswald", sans-serif);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #222;
+  text-decoration: none;
+  transition: color 0.2s ease, border-bottom-color 0.2s ease;
+  border-bottom: 3px solid transparent;
+}
+
+.menu__link:hover,
+.menu__link:focus {
+  color: var(--accent-color, #db4a37);
+  border-bottom-color: var(--accent-color, #db4a37);
+  text-decoration: none;
+}
+
+.menu__item--active .menu__link {
+  color: var(--accent-color, #db4a37);
+  border-bottom-color: var(--accent-color, #db4a37);
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Header
+   -------------------------------------------------------------------------- */
+.header-mobile {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 600;
+  background-color: #fff;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  height: 56px;
+}
+
+.header-mobile__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 16px;
+  position: relative;
+}
+
+.header-mobile__logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 0;
+  text-decoration: none;
+}
+
+.header-mobile__logo:hover {
+  opacity: 0.85;
+  text-decoration: none;
+}
+
+.header-mobile__logo .site-logo {
+  max-height: 36px;
+  width: auto;
+}
+
+/* Mobile spacer — matches header height */
+.header-mobile__height {
+  display: none;
+  height: 56px;
+}
+
+/* --------------------------------------------------------------------------
+   Hamburger Button
+   -------------------------------------------------------------------------- */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.hamburger__line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background-color: #222;
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.hamburger[aria-expanded="true"] .hamburger__line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger[aria-expanded="true"] .hamburger__line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger[aria-expanded="true"] .hamburger__line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Nav Overlay
+   -------------------------------------------------------------------------- */
+.mobile-nav-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 550;
+  background-color: rgba(25, 25, 25, 0.97);
+  overflow-y: auto;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.mobile-nav-overlay.is-open {
+  display: flex;
+  opacity: 1;
+  animation: overlayFadeIn 0.25s ease forwards;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.mobile-nav-overlay__header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-overlay__close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  line-height: 1;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.mobile-nav-overlay__close:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mobile-nav-overlay__nav {
+  padding: 2rem 2rem;
+  flex: 1;
+}
+
+.mobile-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mobile-menu__item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mobile-menu__link {
+  display: block;
+  padding: 1rem 0;
+  font-family: var(--font-heading, "Oswald", sans-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s ease, padding-left 0.2s ease;
+}
+
+.mobile-menu__link:hover,
+.mobile-menu__link:focus {
+  color: var(--accent-color, #db4a37);
+  padding-left: 0.5rem;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive: show/hide desktop vs mobile header
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .header-desktop {
+    display: none;
+  }
+
+  .header-mobile {
+    display: block;
+  }
+
+  .header-mobile__height {
+    display: block;
+  }
+}
+
+@media (min-width: 901px) {
+  .header-mobile {
+    display: none;
+  }
+
+  .header-mobile__height {
+    display: none;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Sticky header scroll behaviour — add .is-scrolled via JS if desired
+   -------------------------------------------------------------------------- */
+.masthead--sticky.is-scrolled {
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+}
