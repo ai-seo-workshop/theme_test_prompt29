@@ -34,7 +34,7 @@ class Category extends Model
     public function getUrlAttribute()
     {
         $locale = $this->language;
-        if ($locale === 'en') {
+        if ($locale === config('app.default_language')) {
             return '/'.$this->slug. '/';
 //            return route_slash('category', ['category' => $this->slug]);
         }
@@ -44,7 +44,7 @@ class Category extends Model
 
     public function absoluteUrl() {
         $locale = $this->language;
-        if ($locale === 'en') {
+        if ($locale === config('app.default_language')) {
             return route_slash('category', ['category' => $this->slug]);
         }
         return route_slash('category.localized', ['locale' => $locale, 'category' => $this->slug]);

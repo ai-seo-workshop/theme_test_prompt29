@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\CategoryService;
 use Closure;
 
 class SetLocale
@@ -23,18 +24,24 @@ class SetLocale
         }
 
         // 否则从路由参数中获取
-        $locale = $request->route('locale');
+        $routeLocale = $request->route('locale');
 
-        // 支持的语言列表
-        $supportedLocales = ['en', 'de', 'fr', 'es'];
+        // 从 config 读取当前站点支持的语言列表（由 IdentifySite 注入）
+        $defaultLanguage     = config('app.default_language', config('app.default_language'));
+        $nonDefaultLanguages = config('app.non_default_languages', []);
 
-        // 如果语言有效，设置它
-        if ($locale && in_array($locale, $supportedLocales)) {
-            app()->setLocale($locale);
+        if ($routeLocale) {
+            // 路由中有 locale 参数（非默认语言路由）
+            // 如果语言不在支持列表中，返回 404，防止无效语言前缀被误处理
+            if (!in_array($routeLocale, $nonDefaultLanguages)) {
+                abort(404);
+            }
+            app()->setLocale($routeLocale);
         } else {
-            // 默认使用英语
-            app()->setLocale('en');
+            // 无 locale 参数（默认语言路由），使用站点默认语言
+            app()->setLocale($defaultLanguage);
         }
+
         return $next($request);
     }
 }

@@ -40,54 +40,71 @@ class SyncData extends Command
      *
      * @return int
      */
-    public function handle()
+
+    public function convertChinesePunctuation(string $text): string
     {
-        $site = DB::connection('center')
-            ->table('sites')
-            ->where('id', 8)
-            ->first();
+        $search  = ['”', '“', "‘", "’", '。', '，'];
+        $replace = ['"', '"', "'", "'", '.' , ','];
+        return str_replace($search, $replace, $text);
+    }
 
-        if ($site) {
-
-            $siteData = ['name'=> $site->name, 'domain' => $site->domain];
-
-            Site::updateOrCreate($siteData, $siteData);
-
-
-//            $categorys = DB::connection('center')
-//                ->table('categorys')
-//                ->whereIn('id', explode(',', $site->category_ids))
-//                ->get();
-//            if ($categorys) {
+    public function handle() {
+        $message = "里存的是英文字符，代码就没问题。";
+        dump($message);
+        dump('处理后:'. $this->convertChinesePunctuation($message));
+    }
+//    public function handle()
+//    {
+//        $site = DB::connection('center')
+//            ->table('sites')
+//            ->where('id', 3)
+//            ->first();
 //
-//                $categoryData = [];
+//        if ($site) {
 //
-//                foreach ($categorys as $k => $category) {
-//                    $categoryData[$k]['id'] = $category->id;
-//                    $categoryData[$k]['name'] = $category->name;
-//                    $categoryData[$k]['slug'] = $category->slug;
-//                    $categoryData[$k]['language'] = $category->language;
-//                    $categoryData[$k]['state'] = $category->state;
-//                    if ($category->language == $site->default_language) {
-//                        $categoryData[$k]['uri'] = '/' . $category->slug;
-//                    } else {
-//                        $categoryData[$k]['uri'] = '/'. $category->language . '/' . $category->slug;
-//                    }
+//            $siteData = ['name'=> $site->name, 'domain' => $site->domain];
+//            dump($siteData);
 //
-//                    $categoryData[$k]['created_at'] = date('Y-m-d H:i:s');
-//                    $categoryData[$k]['updated_at'] = date('Y-m-d H:i:s');
+//            Site::updateOrCreate($siteData, $siteData);
 //
-//                }
 //
-//                Category::insert($categoryData);
-//
-//            }
+////            $categorys = DB::connection('center')
+////                ->table('categorys')
+////                ->whereIn('id', explode(',', $site->category_ids))
+////                ->get();
+////            dump($categorys->count());
+////            if ($categorys) {
+////
+////                $categoryData = [];
+////
+////                foreach ($categorys as $k => $category) {
+////                    $categoryData[$k]['id'] = $category->id;
+////                    $categoryData[$k]['name'] = $category->name;
+////                    $categoryData[$k]['slug'] = $category->slug;
+////                    $categoryData[$k]['language'] = $category->language;
+////                    $categoryData[$k]['state'] = $category->state;
+////                    if ($category->language == $site->default_language) {
+////                        $categoryData[$k]['uri'] = '/' . $category->slug;
+////                    } else {
+////                        $categoryData[$k]['uri'] = '/'. $category->language . '/' . $category->slug;
+////                    }
+////
+////                    $categoryData[$k]['created_at'] = date('Y-m-d H:i:s');
+////                    $categoryData[$k]['updated_at'] = date('Y-m-d H:i:s');
+////
+////                }
+////
+////                Category::insert($categoryData);
+////
+////            }
 //
 //
 //            $materiels = DB::connection('center')->table('materiel_tasks')
 //                ->where('site_id', $site->id)
 //                ->where('state', 2)
 //                ->get();
+//
+////            dump($materiels);
 //
 //
 //            if ($materiels) {
@@ -111,64 +128,58 @@ class SyncData extends Command
 //                MaterielTask::insert($materielData);
 //
 //            }
-
-            $blogs = DB::connection('center')->table('blogs')
-                ->where('use_domain', $site->domain)
-                ->where('used_num', 0)
-                ->where('category_id', 113)
-                ->orderBy('language')
-                ->limit(2)
-                ->get();
-            dump($blogs->count());
-
-            if (!empty($blogs)) {
-                $blogData = [];
-                $updateData = [];
-                foreach ($blogs as $k => $blog) {
-
-                    // 发布时间 策略 每个语言每天发两篇 往前推
-                    if ($k % 10 == 0) {
-                        $day = 0;
-                    }
-
-                    if ($k % 2  == 0) {
-                        $day++;
-                    }
-
-                    $blogData[$k]['title'] = $blog->title;
-                    $blogData[$k]['title_uniq'] = $blog->title_uniq;
-                    $blogData[$k]['h1'] = $blog->h1;
-                    $blogData[$k]['summary'] = $blog->summary;
-                    $blogData[$k]['content'] = $blog->content;
-                    $blogData[$k]['content_faq'] = $blog->content_faq;
-                    $blogData[$k]['head_img'] = $blog->head_img;
-                    $blogData[$k]['head_img_alt'] = $blog->head_img_alt;
-                    $blogData[$k]['keyword'] = $blog->keyword;
-                    $blogData[$k]['language'] = $blog->language;
-                    $blogData[$k]['published_at'] = date('Y-m-d', strtotime('-'.$day.' day', time()));
-                    $blogData[$k]['category_id'] = $blog->category_id;
-                    $blogData[$k]['category_name'] = $blog->category_name;
-                    $blogData[$k]['author'] = $blog->author;
-                    $blogData[$k]['volume'] = rand(1000, 10000);
-
-
-                    array_push($updateData, $blog->id);
-                }
-
-                DB::connection('center')->table('blogs')
-                    ->whereIn('id', $updateData)
-                    ->update(['used_num' => 1]);
-
-
-                Blog::insert($blogData);
-
-            }
-
-
-
-        }
-
-
-
-    }
+//
+////            $blogs = DB::connection('center')->table('blogs')
+////                ->where('use_domain', $site->domain)
+////                ->where('id', '<>', 4964)
+////                ->where('used_num', 0)
+//////                ->where('category_id', 113)
+////                ->orderBy('language')
+////                ->get();
+////            dump($blogs->count());
+////
+////            if (!empty($blogs)) {
+////                $blogData = [];
+////                $updateData = [];
+////                foreach ($blogs as $k => $blog) {
+////
+////                    $day=0;
+////
+////                    $blogData[$k]['type'] = $blog->type;
+////                    $blogData[$k]['title'] = $blog->title;
+////                    $blogData[$k]['title_uniq'] = $blog->title_uniq;
+////                    $blogData[$k]['h1'] = $blog->h1;
+////                    $blogData[$k]['summary'] = $blog->summary;
+////                    $blogData[$k]['content'] = $blog->content;
+////                    $blogData[$k]['content_faq'] = $blog->content_faq;
+////                    $blogData[$k]['head_img'] = $blog->head_img;
+////                    $blogData[$k]['head_img_alt'] = $blog->head_img_alt;
+////                    $blogData[$k]['keyword'] = $blog->keyword;
+////                    $blogData[$k]['language'] = $blog->language;
+////                    $blogData[$k]['published_at'] = date('Y-m-d', strtotime('-'.$day.' day', time()));
+////                    $blogData[$k]['category_id'] = $blog->category_id;
+////                    $blogData[$k]['category_name'] = $blog->category_name;
+////                    $blogData[$k]['author'] = $blog->author;
+////                    $blogData[$k]['volume'] = rand(1000, 10000);
+////
+////
+////                    array_push($updateData, $blog->id);
+////                }
+////
+////                DB::connection('center')->table('blogs')
+////                    ->whereIn('id', $updateData)
+////                    ->update(['used_num' => 1]);
+////
+////
+////                Blog::insert($blogData);
+//
+////            }
+//
+//
+//
+//        }
+//
+//
+//
+//    }
 }

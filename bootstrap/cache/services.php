@@ -33,7 +33,8 @@
     29 => 'App\\Providers\\EventServiceProvider',
     30 => 'App\\Providers\\RouteServiceProvider',
     31 => 'App\\Providers\\ViewServiceProvider',
-    32 => 'Barryvdh\\Debugbar\\ServiceProvider',
+    32 => 'App\\Providers\\DynamicThemeServiceProvider',
+    33 => 'Barryvdh\\Debugbar\\ServiceProvider',
   ),
   'eager' => 
   array (
@@ -57,7 +58,8 @@
     17 => 'App\\Providers\\EventServiceProvider',
     18 => 'App\\Providers\\RouteServiceProvider',
     19 => 'App\\Providers\\ViewServiceProvider',
-    20 => 'Barryvdh\\Debugbar\\ServiceProvider',
+    20 => 'App\\Providers\\DynamicThemeServiceProvider',
+    21 => 'Barryvdh\\Debugbar\\ServiceProvider',
   ),
   'deferred' => 
   array (

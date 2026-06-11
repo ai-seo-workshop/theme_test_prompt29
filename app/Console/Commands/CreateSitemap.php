@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Site;
 use App\Services\SitemapService;
 use Illuminate\Console\Command;
 
@@ -41,7 +42,13 @@ class CreateSitemap extends Command
         $this->info('开始生成sitemap：');
         // 生成sitemap
         $sitemapService = new SitemapService();
-        $sitemapService->createSiteMap();
+        $site = Site::query()->where('domain', config('app.domain'))->first();
+        if($site && $site->languages && count($site->languages) > 1) {
+            $sitemapService->createSiteMap($site->languages);
+        } else {
+            $sitemapService->createSingleLanguage();
+        }
+
 
         $this->info('sitemap生成完成：');
     }

@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use App\Models\MaterielTask;
+use App\Services\CategoryService;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -46,6 +48,25 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
+            $theme = app(\App\Services\ThemeManager::class);
+
+            // 获取当前语言
+            $locale = app()->getLocale();
+
+            // 获取对应语言的分类
+            $categories = CategoryService::getActiveCategories($locale);
+
+            // 获取对应语言的 slogan
+            $slogan = MaterielTask::byLanguage($locale)
+                ->where('type', MaterielTask::TYPE_HOME)
+                ->first();
+
+            return response()->view($theme->view('404'), [
+                'categories' => $categories,
+                'slogan'     => $slogan,
+            ], 404);
+        }
         return parent::render($request, $exception);
     }
 }

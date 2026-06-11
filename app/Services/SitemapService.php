@@ -23,17 +23,40 @@ class SitemapService
     public function __construct()
     {
         $this->language = array_keys(MaterielTask::LANGUAGES());
-        $this->domain = "https://www.".config('app.domain')."/";
+
+        // 从当前站点获取域名(支持多站点)
+        $site = config('app.domain');
+        $this->domain = "https://".config('app.domain')."/";
+    }
+
+    public function createSingleLanguage() :void
+    {
+        $path = public_path('sitemap.xml');
+        $this->domain = 'https://www.'.config('app.domain');
+        $content = $this->_createSingleSitemapContent(config('app.default_language'));
+        file_put_contents($path, $content);
 
     }
 
-    public function createSiteMap() :void
+    protected function _createSingleSitemapContent($lang) :string
+    {
+        $urls = $this->getUrl($lang);
+        $content = "<?xml version='1.0' encoding='UTF-8'?>\n";
+        $content .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
+        foreach ($urls as $url => $time) {
+            $time = date("Y-m-d\TH:i:sP", $time);
+            $content .= "<url>\n<loc>" . $url . "</loc>\n<lastmod>" . $time . "</lastmod>\n</url>\n";
+        }
+        $content .= "\n</urlset>";
+        return $content;
+    }
+
+    public function createSiteMap($languages) :void
     {
 //        $syncDisk = Storage::disk('root');
         $path = public_path('sitemap.xml');
-
+        $this->language = $languages;
         foreach ($this->language as $lang) {
-
             $this->domain = "https://www.".config('app.domain')."/";
 
             if ($lang != config('app.default_language')) {
@@ -56,13 +79,13 @@ class SitemapService
     {
         $this->domain = "https://www.".config('app.domain');
         $content = "<?xml version='1.0' encoding='UTF-8'?>\n";
-        $content .= "<sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.google.com/schemas/sitemap/0.84 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">\n";
+        $content .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
         foreach ($this->language as $lang) {
             $time = date("Y-m-d\TH:i:sP", time());
             $url = rtrim($this->domain, '/'). '/' . $lang . '-sitemap.xml';
-            $content .= "<sitemap>\n<loc>" . $url . "</loc>\n<lastmod>" . $time . "</lastmod>\n</sitemap>\n";
+            $content .= "<url>\n<loc>" . $url . "</loc>\n<lastmod>" . $time . "</lastmod>\n</url>\n";
         }
-        $content .= "\n</sitemapindex>";
+        $content .= "\n</urlset>";
         return $content;
     }
 
@@ -70,7 +93,7 @@ class SitemapService
     {
         $urls = $this->getUrl($lang);
         $content = "<?xml version='1.0' encoding='UTF-8'?>\n";
-        $content .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.google.com/schemas/sitemap/0.84 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\">\n";
+        $content .= "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
         foreach ($urls as $url => $time) {
             $time = date("Y-m-d\TH:i:sP", $time);
             $content .= "<url>\n<loc>" . $url . "</loc>\n<lastmod>" . $time . "</lastmod>\n</url>\n";

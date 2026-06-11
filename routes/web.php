@@ -11,41 +11,39 @@ use App\Http\Controllers\PageController;
 |
 | 路由结构说明：
 |
-| 英语（默认语言，无前缀）:
+| 默认语言（无前缀，由 sites.default_language 决定）:
 |   首页：        /
-|   分类列表：    /{uri}
-|   文章详情：    /{id}
-|   公共页面：    /about, /contact, /privacy
+|   分类列表：    /{category}
+|   文章详情：    /blogs/{title_uniq}
+|   公共页面：    /about, /contact, /privacy, /terms
 |
-| 其他语言（de/fr/es，带前缀）:
-|   首页：        /{lang}
-|   分类列表：    /{lang}/{uri}
-|   文章详情：    /{lang}/{id}
-|   公共页面：    /{lang}/about, /{lang}/contact, /{lang}/privacy
+| 其他语言（带语言前缀，由 sites.languages 决定）:
+|   首页：        /{lang}/
+|   分类列表：    /{lang}/{category}
+|   文章详情：    /{lang}/blogs/{title_uniq}
+|   公共页面：    /{lang}/about, /{lang}/contact, etc.
+|
+| 注意：语言配置由 IdentifySite 中间件在请求阶段注入 config，
+|       路由注册发生在框架启动阶段（早于中间件），
+|       因此不能在此处依赖动态 config 做路由过滤。
+|       语言合法性校验统一交给 SetLocale 中间件处理。
 |
 */
 
-// 支持的语言列表（英语是默认语言，不需要在这里列出）
-$defaultLanguage = config('app.default_language', 'en');
-$supportedLocales = array_values(array_diff(
-    array_keys(\App\Models\MaterielTask::LANGUAGES()),
-    [$defaultLanguage]
-));
-
 // ========================================
-// 其他语言路由（de/fr/es，带语言前缀）
+// 其他语言路由（带语言前缀）
 // ========================================
+// 不使用 where 限制 locale，因为路由注册时 IdentifySite 尚未执行，
+// 无法从 config 读到合法语言列表。合法性由 SetLocale 中间件校验。
 Route::group([
-    'prefix' => '{locale}',
-    'where' => ['locale' => implode('|', $supportedLocales)],  // 限制只能是 de|fr|es
-    'middleware' => ['web', 'setLocale']  // 动态设置语言
+    'prefix'     => '{locale}',
+    'where'      => ['locale' => '[a-z]{2}'],
+    'middleware' => ['web', 'setLocale'],
 ], function () {
 
-    // 首页
     Route::get('/', [BlogController::class, 'index'])
         ->name('home.localized');
 
-    // 公共页面
     Route::get('/about', [PageController::class, 'about'])
         ->name('about.localized');
 
@@ -58,29 +56,27 @@ Route::group([
     Route::get('/terms', [PageController::class, 'terms'])
         ->name('terms.localized');
 
-    // 分类列表页
     Route::get('/{category}', [BlogController::class, 'category'])
-        ->where('category', '[a-z\-]+')
+        ->where('category', '[\da-z\-]+')
         ->name('category.localized');
 
-    // 文章详情页
     Route::get('/blogs/{title_uniq}', [BlogController::class, 'show'])
         ->name('blog.show.localized');
+
     Route::fallback([PageController::class, 'error']);
 });
 
 // ========================================
-// 英语路由（默认语言，无前缀）
+// 默认语言路由（无前缀）
 // ========================================
+// 不传语言参数，让 SetLocale 中间件从 config('app.default_language') 读取
 Route::group([
-    'middleware' => ['web', 'setLocale:en']  // 固定设置为英语
+    'middleware' => ['web', 'setLocale'],
 ], function () {
 
-    // 首页
     Route::get('/', [BlogController::class, 'index'])
         ->name('home');
 
-    // 公共页面
     Route::get('/about', [PageController::class, 'about'])
         ->name('about');
 
@@ -93,18 +89,15 @@ Route::group([
     Route::get('/terms', [PageController::class, 'terms'])
         ->name('terms');
 
-    // 分类列表页
-    // 注意：这个路由必须在文章详情之前，避免冲突
-    // 使用正则表达式限制只匹配小写字母、数字、连字符
     Route::get('/{category}', [BlogController::class, 'category'])
-        ->where('category', '[a-z\-]+')
+        ->where('category', '[\da-z\-]+')
         ->name('category');
 
-    // 文章详情页
-    // 使用正则表达式限制只匹配数字
     Route::get('/blogs/{title_uniq}', [BlogController::class, 'show'])
         ->name('blog.show');
+
     Route::fallback([PageController::class, 'error']);
 });
-Route::fallback([PageController::class, 'error']);
+
+Route::fallback([PageController::class, 'error'])->middleware(['web', 'setLocale']);
 

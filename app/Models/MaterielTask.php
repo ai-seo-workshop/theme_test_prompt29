@@ -22,10 +22,31 @@ class MaterielTask extends Model
     const TYPE_TERMS = 7;
     const TYPE_CATEGORY =8;
 
+    public static function LANGUAGES(): array
+    {
+        // 所有已知语言的名称映射（可按需扩展）
+        $allLanguageNames = [
+            'en' => 'English',
+            'de' => 'Deutsch',
+            'fr' => 'Français',
+            'es' => 'Español',
+            'zh' => '中文',
+            'ja' => '日本語',
+            'ko' => '한국어',
+            'pt' => 'Português',
+            'it' => 'Italiano',
+            'ru' => 'Русский',
+        ];
 
+        // 从 config 读取当前站点支持的语言列表
+        $supported = config('app.supported_languages', [config('app.default_language')]);
 
-    public static function LANGUAGES() {
-        return ['en'=>'English', 'de'=>'Deutsch', 'fr'=>'Français', 'es'=>'Español'];
+        // 返回 [code => name] 格式，只包含当前站点支持的语言
+        $result = [];
+        foreach ($supported as $code) {
+            $result[$code] = $allLanguageNames[$code] ?? $code;
+        }
+        return $result;
     }
 
     public static function SUPPORTS($locale) {
@@ -53,11 +74,40 @@ class MaterielTask extends Model
                 3 => ['name'=>'Contacto', 'uri'=>'contact'],
                 4 => ['name'=>'Privacidad', 'uri'=>'privacy'],
                 7 => ['name'=>'Términos', 'uri'=>'terms']
+            ],
+            'it' => [
+                2 => ['name'=>'A proposito', 'uri'=>'about'],
+                3 => ['name'=>'Contatti', 'uri'=>'contact'],
+                4 => ['name'=>'Politica', 'uri'=>'privacy'],
+                7 => ['name'=>'Condizioni', 'uri'=>'terms']
+            ],
+            'tr' => [
+                2 => ['name'=>'Hakkımızda', 'uri'=>'about'],
+                3 => ['name'=>'İletişim', 'uri'=>'contact'],
+                4 => ['name'=>'Gizlilik', 'uri'=>'privacy'],
+                7 => ['name'=>'Şartlar', 'uri'=>'terms']
+            ],
+            'pl' => [
+                2 => ['name'=>'O nas', 'uri'=>'about'],
+                3 => ['name'=>'Kontakt', 'uri'=>'contact'],
+                4 => ['name'=>'Prywatność', 'uri'=>'privacy'],
+                7 => ['name'=>'Warunki', 'uri'=>'terms']
+            ],
+            'hu' => [
+                2 => ['name'=>'Rólunk', 'uri'=>'about'],
+                3 => ['name'=>'Kapcsolat', 'uri'=>'contact'],
+                4 => ['name'=>'Adatvédelem', 'uri'=>'privacy'],
+                7 => ['name'=>'Feltételek', 'uri'=>'terms']
+            ],
+            'nl' => [
+                2 => ['name'=>'Over ons', 'uri'=>'about'],
+                3 => ['name'=>'Contact', 'uri'=>'contact'],
+                4 => ['name'=>'Privacybeleid', 'uri'=>'privacy'],
+                7 => ['name'=>'Voorwaarden', 'uri'=>'terms']
             ]
         ];
         return data_get($support, $locale, []);
     }
-
 
     public static function home($locale) {
         $home = [
@@ -65,6 +115,11 @@ class MaterielTask extends Model
             'de' => 'Startseite',
             'fr' => 'Accueil',
             'es' => 'Inicio',
+            'it' => 'Casa',
+            'tr' => 'Ev',
+            'pl' => 'Dom',
+            'hu' => 'Otthon',
+            'nl' => 'Thuis'
         ];
         return data_get($home, $locale, '');
     }
@@ -74,7 +129,12 @@ class MaterielTask extends Model
             'en' => 'Recent Posts',
             'de' => 'Neueste Beiträge',
             'fr' => 'Articles Récents',
-            'es' => 'Publicaciones Recientes'
+            'es' => 'Publicaciones Recientes',
+            'it' => 'Articoli recenti',
+            'tr' => 'Son Yazılar',
+            'pl' => 'Ostatnie posty',
+            'hu' => 'Legutóbbi bejegyzések',
+            'nl' => 'Recente berichten'
         ];
         return data_get($recent_posts, $locale, '');
     }
@@ -84,7 +144,12 @@ class MaterielTask extends Model
             'en'=>'Related Posts',
             'de'=>'Verwandte Beiträge',
             'fr'=>'Articles connexes',
-            'es'=>'Publicaciones relacionadas'
+            'es'=>'Publicaciones relacionadas',
+            'it' => 'Post correlati',
+            'tr' => 'İlgili Yazılar',
+            'pl' => 'Powiązane posty',
+            'hu' => 'Kapcsolódó bejegyzések',
+            'nl' => 'Gerelateerde berichten'
         ];
         return data_get($related_posts, $locale, '');
     }
@@ -94,7 +159,12 @@ class MaterielTask extends Model
             'en' => 'Read Article',
             'de' => 'Artikel lesen',
             'fr' => 'Lire l’article',
-            'es' => 'Leer el artículo'
+            'es' => 'Leer el artículo',
+            'it' => "Leggi l'articolo",
+            'tr' => 'Makaleyi okuyun',
+            'pl' => 'Przeczytaj artykuł',
+            'hu' => 'Cikk olvasása',
+            'nl' => 'Lees het artikel'
         ];
         return data_get($read_article, $locale, '');
     }
@@ -104,7 +174,12 @@ class MaterielTask extends Model
             'en' => 'Hot Topics',
             'de' => 'Aktuelle Themen',
             'fr' => 'Sujets populaires',
-            'es' => 'Temas candentes'
+            'es' => 'Temas candentes',
+            'it' => 'Argomenti di tendenza',
+            'tr' => 'Güncel Konular',
+            'pl' => 'Gorące tematy',
+            'hu' => 'Forró témák',
+            'nl' => 'Actuele onderwerpen'
         ];
         return data_get($hot_topics, $locale, '');
     }
@@ -114,7 +189,12 @@ class MaterielTask extends Model
             'en' => 'Oops! Page Not Found',
             'de' => 'Ups! Seite nicht gefunden',
             'fr' => 'Oups ! Page introuvable',
-            'es' => '¡Ups! Página no encontrada'
+            'es' => '¡Ups! Página no encontrada',
+            'it' => 'Ops! Pagina non trovata',
+            'tr' => 'Ups! Sayfa bulunamadı.',
+            'pl' => 'Ups! Strona nie znaleziona',
+            'hu' => 'Hoppá! Az oldal nem található',
+            'nl' => 'Oeps! Pagina niet gevonden'
         ];
         return data_get($page_not_found, $locale, '');
     }
@@ -124,7 +204,12 @@ class MaterielTask extends Model
             'en' => "The page you're looking for seems to have gone on a training run and hasn't come back yet.",
             'de' => "Die Seite, die du suchst, scheint zu einer Trainingsrunde aufgebrochen zu sein und ist noch nicht zurück.",
             'fr' => "La page que vous recherchez semble être partie faire un entraînement et n’est pas encore revenue.",
-            'es' => "La página que buscas parece haberse ido a hacer un entrenamiento y aún no ha regresado."
+            'es' => "La página que buscas parece haberse ido a hacer un entrenamiento y aún no ha regresado.",
+            'it' => 'La pagina che stai cercando sembra essere andata in fase di test e non è ancora tornata disponibile.',
+            'tr' => 'Aradığınız sayfa bir eğitim çalışmasına çıkmış gibi görünüyor ve henüz geri dönmedi.',
+            'pl' => 'Strona, której szukasz, najwyraźniej odbyła trening i jeszcze nie powróciła.',
+            'hu' => 'Úgy tűnik, a keresett oldal egy betanítási folyamaton ment keresztül, és még nem tért vissza.',
+            'nl' => 'De pagina die u zoekt lijkt tijdelijk offline te zijn en is nog niet teruggekeerd.'
         ];
         return data_get($desc_1_404, $locale, '');
     }
@@ -134,7 +219,12 @@ class MaterielTask extends Model
             'en' => "Don't worry, there are plenty of other great places to explore!",
             'de' => "Keine Sorge, es gibt noch viele andere großartige Seiten zu entdecken!",
             'fr' => "Ne vous inquiétez pas, il y a plein d’autres endroits intéressants à découvrir !",
-            'es' => "No te preocupes, ¡hay muchos otros lugares increíbles por explorar!"
+            'es' => "No te preocupes, ¡hay muchos otros lugares increíbles por explorar!",
+            'it' => 'Non preoccuparti, ci sono tantissimi altri posti meravigliosi da esplorare!',
+            'tr' => 'Merak etmeyin, keşfedilecek daha birçok harika yer var!',
+            'pl' => 'Nie martw się, jest mnóstwo innych wspaniałych miejsc do odkrycia!',
+            'hu' => 'Ne aggódj, rengeteg más nagyszerű hely is van, amit felfedezhetsz!',
+            'nl' => 'Geen zorgen, er zijn nog genoeg andere fantastische plekken om te ontdekken!'
         ];
         return data_get($desc_2_404, $locale, '');
     }
@@ -144,7 +234,12 @@ class MaterielTask extends Model
             'en'=>'Go to Homepage',
             'de'=>'Zur Startseite',
             'fr'=>'Aller à l’accueil',
-            'es'=>'Ir a la página de inicio'
+            'es'=>'Ir a la página de inicio',
+            'it' => 'Vai alla homepage',
+            'tr' => 'Ana sayfaya git',
+            'pl' => 'Przejdź do strony głównej',
+            'hu' => 'Ugrás a kezdőlapra',
+            'nl' => 'Ga naar de homepage'
         ];
         return data_get($go_to_homepage, $locale, '');
     }
@@ -154,7 +249,12 @@ class MaterielTask extends Model
             'en'=>'Popular Destinations',
             'de'=>'Beliebte Themen',
             'fr'=>'Destinations populaires',
-            'es'=>'Destinos populares'
+            'es'=>'Destinos populares',
+            'it' => 'Destinazioni popolari',
+            'tr' => 'Popüler Destinasyonlar',
+            'pl' => 'Popularne miejsca docelowe',
+            'hu' => 'Népszerű úti célok',
+            'nl' => 'Populaire bestemmingen'
         ];
         return data_get($popular_destinations, $locale, '');
     }
@@ -164,7 +264,12 @@ class MaterielTask extends Model
             'en'=>'Content',
             'de'=>'Inhalt',
             'fr'=>'Contenu',
-            'es'=>'Contenido'
+            'es'=>'Contenido',
+            'it' => 'Contenuto',
+            'tr' => 'İçerik',
+            'pl' => 'Treść',
+            'hu' => 'Tartalom',
+            'nl' => 'Inhoud'
         ];
         return data_get($detail_content, $locale, '');
     }
@@ -174,7 +279,12 @@ class MaterielTask extends Model
             'en'=>'Popular Articles',
             'de'=>'Beliebte Artikel',
             'fr'=>'Articles populaires',
-            'es'=>'Artículos populares'
+            'es'=>'Artículos populares',
+            'it' => 'Articoli popolari',
+            'tr' => 'Popüler Makaleler',
+            'pl' => 'Popularne artykuły',
+            'hu' => 'Népszerű cikkek',
+            'nl' => 'Populaire artikelen'
         ];
         return data_get($popular_articles, $locale, '');
     }
@@ -184,7 +294,12 @@ class MaterielTask extends Model
             'en'=>'Contact Us',
             'de'=>'Kontaktieren Sie uns',
             'fr'=>'Contactez-nous',
-            'es'=>'Contáctanos'
+            'es'=>'Contáctanos',
+            'it' => 'Contattaci',
+            'tr' => 'Bize Ulaşın',
+            'pl' => 'Skontaktuj się z nami',
+            'hu' => 'Kapcsolat',
+            'nl' => 'Neem contact met ons op'
         ];
         return data_get($contact_us, $locale, '');
     }
@@ -194,7 +309,12 @@ class MaterielTask extends Model
             'en'=>"Have questions? We're here to help!",
             'de'=>"Haben Sie Fragen? Wir sind für Sie da!",
             'fr'=>'Des questions ? Nous sommes là pour vous aider !',
-            'es'=>'¿Tienes preguntas? ¡Estamos aquí para ayudarte!'
+            'es'=>'¿Tienes preguntas? ¡Estamos aquí para ayudarte!',
+            'it' => 'Hai domande? Siamo qui per aiutarti!',
+            'tr' => 'Sorularınız mı var? Yardımcı olmak için buradayız!',
+            'pl' => 'Masz pytania? Jesteśmy tu, żeby pomóc!',
+            'hu' => 'Kérdései vannak? Segítünk!',
+            'nl' => 'Heb je vragen? Wij helpen je graag!'
         ];
         return data_get($contact_us_desc, $locale, '');
     }
@@ -204,7 +324,12 @@ class MaterielTask extends Model
             'en'=>'Get in Touch',
             'de'=>'Kontakt aufnehmen',
             'fr'=>'Entrer en contact',
-            'es'=>'Ponte en contacto'
+            'es'=>'Ponte en contacto',
+            'it' => 'Contattaci',
+            'tr' => 'İletişime Geçin',
+            'pl' => 'Skontaktuj się z nami',
+            'hu' => 'Kapcsolatfelvétel',
+            'nl' => 'Neem contact op'
         ];
         return data_get($get_in_touch, $locale, '');
     }
@@ -214,7 +339,12 @@ class MaterielTask extends Model
             'en'=>'Office Topics',
             'de'=>'Bürothemen',
             'fr'=>'Thèmes de Bureau',
-            'es'=>'Temas de Oficina'
+            'es'=>'Temas de Oficina',
+            'it' => "Argomenti d'ufficio",
+            'tr' => 'Ofis Konuları',
+            'pl' => 'Tematy biurowe',
+            'hu' => 'Irodai témák',
+            'nl' => 'Kantooronderwerpen'
         ];
         return data_get($office_topics, $locale, '');
     }
@@ -224,7 +354,12 @@ class MaterielTask extends Model
             'en'=>'All rights reserved.',
             'de'=>'Alle Rechte vorbehalten.',
             'fr'=>'Tous droits réservés.',
-            'es'=>'Todos los derechos reservados.'
+            'es'=>'Todos los derechos reservados.',
+            'it' => 'Tutti i diritti riservati.',
+            'tr' => 'Her hakkı saklıdır.',
+            'pl' => 'Wszelkie prawa zastrzeżone.',
+            'hu' => 'Minden jog fenntartva.',
+            'nl' => 'Alle rechten voorbehouden.'
         ];
         return data_get($copyright, $locale, '');
     }
@@ -239,32 +374,17 @@ class MaterielTask extends Model
 //        return data_get($copyright, $locale, '');
 //    }
 
-    public static function homeH1($locale) {
-        $homeH1 = [
-            'en'=>'Trusted Answers for Your Tech Problems',
-            'de'=>'Verlässliche Antworten auf Ihre Technikprobleme',
-            'fr'=>'Des réponses fiables à vos problèmes technologiques',
-            'es'=>'Respuestas confiables para tus problemas tecnológicos'
-        ];
-        return data_get($homeH1, $locale, '');
-    }
-
-    public static function heroDesc($locale) {
-        $heroDesc = [
-            'en'=>'Easy-to-follow guides that help you troubleshoot everyday tech problems without confusion or unnecessary jargon.',
-            'de'=>'Leicht verständliche Anleitungen, die dir helfen, alltägliche technische Probleme ohne Verwirrung oder unnötigen Fachjargon zu lösen.',
-            'fr'=>'Des guides faciles à suivre qui vous aident à résoudre les problèmes technologiques du quotidien, sans confusion ni jargon inutile.',
-            'es'=>'Guías fáciles de seguir que te ayudan a resolver problemas tecnológicos cotidianos sin confusión ni jerga innecesaria.'
-        ];
-        return data_get($heroDesc, $locale, '');
-    }
-
     public static function company($locale) {
         $company = [
             'en' => 'Company',
             'de' => 'Unternehmen',
             'fr' => 'Entreprise',
             'es' => 'Empresa',
+            'it' => 'Azienda',
+            'tr' => 'Şirket',
+            'pl' => 'Firma',
+            'hu' => 'Vállalat',
+            'nl' => 'Bedrijf'
         ];
         return data_get($company, $locale, '');
     }
@@ -275,6 +395,11 @@ class MaterielTask extends Model
             'de' => 'Ressourcen',
             'fr' => 'Ressources',
             'es' => 'Recursos',
+            'it' => 'Risorsa',
+            'tr' => 'Kaynak',
+            'pl' => 'Ratunek',
+            'hu' => 'Forrás',
+            'nl' => 'Bron'
         ];
         return data_get($resource, $locale, '');
     }
@@ -285,6 +410,11 @@ class MaterielTask extends Model
             'de' => 'Rechtliche',
             'fr' => 'Juridique',
             'es' => 'Jurídico',
+            'it' => 'Legale',
+            'tr' => 'Yasal',
+            'pl' => 'Prawny',
+            'hu' => 'Jogi',
+            'nl' => 'Juridisch'
         ];
         return data_get($legal, $locale, '');
     }
@@ -295,6 +425,11 @@ class MaterielTask extends Model
             'de' => 'Von',
             'fr' => 'Par',
             'es' => 'Por',
+            'it' => 'Di',
+            'tr' => 'İle',
+            'pl' => 'Przez',
+            'hu' => 'Által',
+            'nl' => 'Door'
         ];
         return data_get($by, $locale, '');
     }
@@ -305,6 +440,11 @@ class MaterielTask extends Model
             'de' => 'Veröffentlicht',
             'fr' => 'Publié',
             'es' => 'Publicado',
+            'it' => 'Pubblicato',
+            'tr' => 'Yayınlandı',
+            'pl' => 'Opublikowany',
+            'hu' => 'Közzétett',
+            'nl' => 'Gepubliceerd'
         ];
         return data_get($detailPublished, $locale, '');
     }
@@ -315,8 +455,43 @@ class MaterielTask extends Model
             'de' => 'Abgelegt unter',
             'fr' => 'Classé sous',
             'es' => 'Archivado en',
+            'it' => 'Archiviato sotto',
+            'tr' => 'Dosya altında',
+            'pl' => 'Złożono w ramach',
+            'hu' => 'Kategória',
+            'nl' => 'Gearchiveerd onder'
         ];
         return data_get($filedUnder, $locale, '');
+    }
+
+    public static function next($locale) {
+        $next = [
+            'en' => 'Next',
+            'de' => 'Weiter',
+            'fr' => 'Suivant',
+            'es' => 'Siguiente',
+            'it' => 'Successivo',
+            'tr' => 'Sonraki',
+            'pl' => 'Następny',
+            'hu' => 'Következő',
+            'nl' => 'Volgende'
+        ];
+        return data_get($next, $locale, '');
+    }
+
+    public static function previous($locale) {
+        $previous = [
+            'en' => 'Previous',
+            'de' => 'Zurück',
+            'fr' => 'Précédent',
+            'es' => 'Anterior',
+            'it' => 'Precedente',
+            'tr' => 'Önceki',
+            'pl' => 'Poprzedni',
+            'hu' => 'Előző',
+            'nl' => 'Vorige'
+        ];
+        return data_get($previous, $locale, '');
     }
 
     // 查询作用域 - 按语言过滤

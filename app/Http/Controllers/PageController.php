@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MaterielTask;
+use App\Services\CategoryService;
 
 class PageController extends Controller
 {
@@ -13,13 +14,15 @@ class PageController extends Controller
     {
         $pageInfo = $this->seoInfo(MaterielTask::TYPE_ABOUT);
         if (!$pageInfo) {
-            return response()->view('errors.404', ['categories' => $this->categories], 404);
+            return response()->view($this->themeManager->view('404'), ['categories' => $this->categories, 'slogan' => $this->seoInfo(MaterielTask::TYPE_HOME)], 404);
         }
 
-        return view('page', [
+        return view($this->themeManager->view('page'), [
             'gtag' => $this->site->gtag,
             'pageInfo' => $pageInfo,
-            'categories' => $this->categories
+            'categories' => $this->categories,
+            'slogan' => $this->seoInfo(MaterielTask::TYPE_HOME),
+            'crumbs' => $this->pagecrumbs($pageInfo),
         ]);
     }
 
@@ -30,13 +33,15 @@ class PageController extends Controller
     {
         $pageInfo = $this->seoInfo(MaterielTask::TYPE_CONTACT);
         if (!$pageInfo) {
-            return response()->view('errors.404', ['categories' => $this->categories], 404);
+            return response()->view($this->themeManager->view('404'), ['categories' => $this->categories, 'slogan' => $this->seoInfo(MaterielTask::TYPE_HOME)], 404);
         }
 
-        return view('page', [
+        return view($this->themeManager->view('page'), [
             'gtag' => $this->site->gtag,
             'pageInfo' => $pageInfo,
-            'categories' => $this->categories
+            'categories' => $this->categories,
+            'slogan' => $this->seoInfo(MaterielTask::TYPE_HOME),
+            'crumbs' => $this->pagecrumbs($pageInfo),
         ]);
     }
 
@@ -47,13 +52,15 @@ class PageController extends Controller
     {
         $pageInfo = $this->seoInfo(MaterielTask::TYPE_POLICY);
         if (!$pageInfo) {
-            return response()->view('errors.404', ['categories' => $this->categories], 404);
+            return response()->view($this->themeManager->view('404'), ['categories' => $this->categories, 'slogan' => $this->seoInfo(MaterielTask::TYPE_HOME)], 404);
         }
 
-        return view('page', [
+        return view($this->themeManager->view('page'), [
             'gtag' => $this->site->gtag,
             'pageInfo' => $pageInfo,
-            'categories' => $this->categories
+            'categories' => $this->categories,
+            'slogan' => $this->seoInfo(MaterielTask::TYPE_HOME),
+            'crumbs' => $this->pagecrumbs($pageInfo),
         ]);
     }
 
@@ -64,17 +71,32 @@ class PageController extends Controller
     {
         $pageInfo = $this->seoInfo(MaterielTask::TYPE_TERMS);
         if (!$pageInfo) {
-            return response()->view('errors.404', ['categories' => $this->categories], 404);
+            return response()->view($this->themeManager->view('404'), ['categories' => $this->categories, 'slogan' => $this->seoInfo(MaterielTask::TYPE_HOME)], 404);
         }
 
-        return view('page', [
+        return view($this->themeManager->view('page'), [
             'gtag' => $this->site->gtag,
             'pageInfo' => $pageInfo,
-            'categories' => $this->categories
+            'categories' => $this->categories,
+            'slogan' => $this->seoInfo(MaterielTask::TYPE_HOME),
+            'crumbs' => $this->pagecrumbs($pageInfo),
         ]);
     }
 
+    /**
+     * 构建 page 页面的面包屑（首页 > 页面名称）
+     */
+    private function pagecrumbs($pageInfo): array
+    {
+        $pageName = data_get(MaterielTask::SUPPORTS(app()->getLocale()), $pageInfo->type . '.name', $pageInfo->title ?? '');
+
+        return array_merge(
+            $this->crumbs(null, null),
+            [['title' => $pageName, 'absolute_url' => rtrim(request()->url(), '/') . '/']]
+        );
+    }
+
     public function error() {
-        return response()->view('errors.404', ['categories' => $this->categories], 404);
+        return response()->view($this->themeManager->view('404'), ['categories' => $this->categories, 'slogan' => $this->seoInfo(MaterielTask::TYPE_HOME)], 404);
     }
 }
